@@ -33,30 +33,30 @@ const commit = () => {
 const addReverseCommand = (cb, variable, value) => {
     if (trans.length) {
         const tran = trans[trans.length - 1];
-        tran.push(() => cb(variable, value));
+        tran.push(cb.bind(null, variable, value));
     }
 }
 
 const commands = {
     set: args => {
-        if (args.length < 2 || isNaN(+args[1])) throw new Error(colorText('set command wrong(set variable value)'));
+        if (args.length < 2 || isNaN(+args[1])) throw new Error(colorText('set command invalid(set variable value)'));
         addReverseCommand((variable, value) => setValue(variable, value), args[0], db[args[0]]);
         setValue(args[0], +args[1]);
     },
 
     get: args => {
-        if (args.length == 0) throw new Error(colorText('get command wrong(get variable)'));
+        if (args.length == 0) throw new Error(colorText('get command invalid(get variable)'));
         console.log(colorText(getValue(args[0]) || 'NULL'));
     },
 
     unset: args => {
-        if (args.length == 0) throw new Error(colorText('unset command wrong(unset variable)'));
+        if (args.length == 0) throw new Error(colorText('unset command invalid(unset variable)'));
         addReverseCommand((varialbe, value) => setValue(varialbe, value), args[0], db[args[0]]);
         unSet(args[0]);
     },
 
     numequalto: args => {
-        if (args.length < 1 || isNaN(+args[0])) throw new Error(colorText('equal command wrong(numequalto number)'));
+        if (args.length < 1 || isNaN(+args[0])) throw new Error(colorText('equal command invalid(numequalto number)'));
         console.log(colorText(nums.get(+args[0]) || 0));
     },
 
